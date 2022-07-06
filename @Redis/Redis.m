@@ -56,9 +56,16 @@ classdef Redis < handle
         
         response = cmd(obj, varargin)
         
-        function output = get_message(obj)
+        function output = get_message(obj,timeout)
+            arguments 
+                obj;
+                timeout = inf;
+            end
+            timeout_ = obj.timeout;
+            obj.timeout = timeout;
             % Get PSUB/SUB messages
             output = obj.read_response();
+            obj.timeout = timeout_;
         end
 
         function output = append(obj, key, value, varargin)
